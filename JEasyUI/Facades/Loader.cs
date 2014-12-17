@@ -28,7 +28,7 @@ namespace JEasyUI.Facades
         /// <param name="action">An action to set the options.</param>
         /// </summary>
         public Loader(Action<LoaderOptions> action)
-            : base()
+            : this()
         {
             action(this.options);
         }
@@ -136,36 +136,38 @@ namespace JEasyUI.Facades
         public string ToHtmlString()
         {
             StringBuilder loader = new StringBuilder();
+            loader.AppendLine("<script>");
 
             if (!string.IsNullOrEmpty(this.options.Base))
-                loader.AppendFormat("{0}.{1} = '{2}';", Loader.JavascriptName, Loader.BasePropertyName, this.options.Base);
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.BasePropertyName, this.options.Base);
 
             if (!string.IsNullOrEmpty(this.options.Theme))
-                loader.AppendFormat("{0}.{1} = '{2}';", Loader.JavascriptName, Loader.BasePropertyName, this.options.Theme);
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.ThemePropertyName, this.options.Theme);
 
             if (!string.IsNullOrEmpty(this.options.Locale))
-                loader.AppendFormat("{0}.{1} = '{2}';", Loader.JavascriptName, Loader.BasePropertyName, this.options.Locale);
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.LocalePropertyName, this.options.Locale);
 
             if (this.options.Css.HasValue)
-                loader.AppendFormat("{0}.{1} = '{2}';", Loader.JavascriptName, Loader.BasePropertyName, this.options.Css.Value.ToString().ToLowerInvariant());
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.CssPropertyName, this.options.Css.Value.ToString().ToLowerInvariant());
 
             if (this.options.Timeout.HasValue)
-                loader.AppendFormat("{0}.{1} = {2};", Loader.JavascriptName, Loader.BasePropertyName, this.options.Timeout.Value.ToString());
+                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.TimeoutPropertyName, this.options.Timeout.Value.ToString());
 
             if (!string.IsNullOrEmpty(this.options.OnProgress))
-                loader.AppendFormat("{0}.{1} = {2};", Loader.JavascriptName, Loader.OnProgressEventName, this.options.OnProgress);
+                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.OnProgressEventName, this.options.OnProgress);
 
             if (!string.IsNullOrEmpty(this.options.OnLoad))
-                loader.AppendFormat("{0}.{1} = {2};", Loader.JavascriptName, Loader.OnLoadEventName, this.options.OnLoad);
+                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.OnLoadEventName, this.options.OnLoad);
 
             if (this.options.ModulesToLoad != null)
             {
                 foreach (var module in this.options.ModulesToLoad)
                 {
-                    loader.AppendFormat("{0}.{1}('{2}', {3}", Loader.JavascriptName, Loader.LoadFunctionName, module.Key, module.Value);
+                    loader.AppendFormat("{0}.{1}('{2}', {3}\n", Loader.JavascriptName, Loader.LoadFunctionName, module.Key, module.Value);
                 }
             }
 
+            loader.AppendLine("</script>");
             return loader.ToString();
         }
 
@@ -209,9 +211,14 @@ namespace JEasyUI.Facades
         public const string OnLoadEventName = "onLoad";
 
         /// <summary>
-        /// Gets the name of the load function.s
+        /// Gets the name of the load function.
         /// </summary>
         public const string LoadFunctionName = "load";
+
+        /// <summary>
+        /// Gets the name of the property which holds the locale.
+        /// </summary>
+        public const string LocalePropertyName = "locale";
 
         private LoaderOptions options;
 

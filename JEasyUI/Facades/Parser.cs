@@ -28,7 +28,7 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="action">An action to set the options.</param>
         public Parser(Action<ParserOptions> action)
-            :base()
+            : this()
         {
             action(this.options);
         }
@@ -74,15 +74,15 @@ namespace JEasyUI.Facades
         public string ToHtmlString()
         {
             StringBuilder parser = new StringBuilder();
-
+            parser.AppendLine("<script>");
             if (this.options.AutoParse.HasValue)
                 parser.AppendFormat("$.parser.auto = {0};\n", this.options.AutoParse.Value.ToString().ToLowerInvariant());
 
             if (!string.IsNullOrEmpty(this.options.OnComplete))
-                parser.AppendFormat("$.parser.onComplete = {0};", this.options.OnComplete);
+                parser.AppendFormat("$.parser.onComplete = {0};\n", this.options.OnComplete);
 
             parser.AppendFormat("$.parser.parse('{0}');\n", this.options.Node);
-
+            parser.AppendLine("</script>");
             return parser.ToString();
         }
 

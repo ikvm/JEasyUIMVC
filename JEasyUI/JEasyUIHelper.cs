@@ -16,7 +16,7 @@ namespace JEasyUI
         /// Initializes a new instance of <see cref="JEasyUI.Facades.Loader"/>.
         /// </summary>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/>.</returns>
-        public static Loader Loader()
+        public Loader Loader()
         {
             return new Loader();
         }
@@ -26,7 +26,7 @@ namespace JEasyUI
         /// </summary>
         /// <param name="action">An action to set the options.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/>.</returns>
-        public static Loader Loader(Action<LoaderOptions> action)
+        public Loader Loader(Action<LoaderOptions> action)
         {
             return new Loader(action);
         }
