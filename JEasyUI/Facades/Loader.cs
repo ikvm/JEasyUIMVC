@@ -20,7 +20,7 @@ namespace JEasyUI.Facades
         /// </summary>
         public Loader()
         {
-            this.options = new LoaderOptions();
+            this.Options = new LoaderOptions();
         }
 
         /// <summary>
@@ -30,8 +30,14 @@ namespace JEasyUI.Facades
         public Loader(Action<LoaderOptions> action)
             : this()
         {
-            action(this.options);
+            action(this.Options);
         }
+
+        #endregion
+
+        #region Properties
+        
+        public LoaderOptions Options { get; set; }
 
         #endregion
 
@@ -42,9 +48,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="baseFolder">The easyui base directory, must end with '/'.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader Base(string baseFolder)
+        public Loader SetBase(string baseFolder)
         {
-            this.options.Base = baseFolder;
+            this.Options.Base = baseFolder;
             return this;
         }
 
@@ -53,9 +59,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="theme">The name of theme that defined in 'themes' directory.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader Theme(string theme)
+        public Loader SetTheme(string theme)
         {
-            this.options.Theme = theme;
+            this.Options.Theme = theme;
             return this;
         }
 
@@ -64,9 +70,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="css">If <c>true</c> a css will be load when loading a module.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader Css(bool loadCss)
+        public Loader SetCss(bool loadCss)
         {
-            this.options.Css = loadCss;
+            this.Options.Css = loadCss;
             return this;
         }
 
@@ -75,9 +81,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="locale">The locale name.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader Locale(string locale)
+        public Loader SetLocale(string locale)
         {
-            this.options.Locale = locale;
+            this.Options.Locale = locale;
             return this;
         }
 
@@ -86,9 +92,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="timeOut">Timeout value in milliseconds.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader Timeout(long timeOut)
+        public Loader SetTimeout(long timeOut)
         {
-            this.options.Timeout = timeOut;
+            this.Options.Timeout = timeOut;
             return this;
         }
 
@@ -97,9 +103,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="onProgress">A javascript function/delegate to handle the event.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader OnProgress(string onProgress)
+        public Loader SetOnProgress(string onProgress)
         {
-            this.options.OnProgress = onProgress;
+            this.Options.OnProgress = onProgress;
             return this;
         }
 
@@ -108,9 +114,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="onLoad">A javascript function/delegate to handle the event.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
-        public Loader OnLoad(string onLoad)
+        public Loader SetOnLoad(string onLoad)
         {
-            this.options.OnLoad = onLoad;
+            this.Options.OnLoad = onLoad;
             return this;
         }
 
@@ -127,8 +133,8 @@ namespace JEasyUI.Facades
         /// <returns>An instance of <see cref="JEasyUI.Facades.Loader"/></returns>
         public Loader LoadModule(string module, string callback)
         {
-            if (!this.options.ModulesToLoad.ContainsKey(module))
-                this.options.ModulesToLoad.Add(module, callback);
+            if (!this.Options.ModulesToLoad.ContainsKey(module))
+                this.Options.ModulesToLoad.Add(module, callback);
             return this;
         }
 
@@ -138,30 +144,30 @@ namespace JEasyUI.Facades
             StringBuilder loader = new StringBuilder();
             loader.AppendLine("<script>");
 
-            if (!string.IsNullOrEmpty(this.options.Base))
-                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.BasePropertyName, this.options.Base);
+            if (!string.IsNullOrEmpty(this.Options.Base))
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.BasePropertyName, this.Options.Base);
 
-            if (!string.IsNullOrEmpty(this.options.Theme))
-                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.ThemePropertyName, this.options.Theme);
+            if (!string.IsNullOrEmpty(this.Options.Theme))
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.ThemePropertyName, this.Options.Theme);
 
-            if (!string.IsNullOrEmpty(this.options.Locale))
-                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.LocalePropertyName, this.options.Locale);
+            if (!string.IsNullOrEmpty(this.Options.Locale))
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.LocalePropertyName, this.Options.Locale);
 
-            if (this.options.Css.HasValue)
-                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.CssPropertyName, this.options.Css.Value.ToString().ToLowerInvariant());
+            if (this.Options.Css.HasValue)
+                loader.AppendFormat("{0}.{1} = '{2}';\n", Loader.JavascriptName, Loader.CssPropertyName, this.Options.Css.Value.ToString().ToLowerInvariant());
 
-            if (this.options.Timeout.HasValue)
-                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.TimeoutPropertyName, this.options.Timeout.Value.ToString());
+            if (this.Options.Timeout.HasValue)
+                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.TimeoutPropertyName, this.Options.Timeout.Value.ToString());
 
-            if (!string.IsNullOrEmpty(this.options.OnProgress))
-                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.OnProgressEventName, this.options.OnProgress);
+            if (!string.IsNullOrEmpty(this.Options.OnProgress))
+                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.OnProgressEventName, this.Options.OnProgress);
 
-            if (!string.IsNullOrEmpty(this.options.OnLoad))
-                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.OnLoadEventName, this.options.OnLoad);
+            if (!string.IsNullOrEmpty(this.Options.OnLoad))
+                loader.AppendFormat("{0}.{1} = {2};\n", Loader.JavascriptName, Loader.OnLoadEventName, this.Options.OnLoad);
 
-            if (this.options.ModulesToLoad != null)
+            if (this.Options.ModulesToLoad != null)
             {
-                foreach (var module in this.options.ModulesToLoad)
+                foreach (var module in this.Options.ModulesToLoad)
                 {
                     loader.AppendFormat("{0}.{1}('{2}', {3}\n", Loader.JavascriptName, Loader.LoadFunctionName, module.Key, module.Value);
                 }
@@ -219,8 +225,6 @@ namespace JEasyUI.Facades
         /// Gets the name of the property which holds the locale.
         /// </summary>
         public const string LocalePropertyName = "locale";
-
-        private LoaderOptions options;
 
         #endregion
     }

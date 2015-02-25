@@ -20,7 +20,7 @@ namespace JEasyUI.Facades
         /// </summary>
         public Parser()
         {
-            this.options = new ParserOptions();
+            this.Options = new ParserOptions();
         }
 
         /// <summary>
@@ -30,8 +30,14 @@ namespace JEasyUI.Facades
         public Parser(Action<ParserOptions> action)
             : this()
         {
-            action(this.options);
+            action(this.Options);
         }
+
+        #endregion
+
+        #region Properties
+
+        public ParserOptions Options { get; set; }
 
         #endregion
 
@@ -42,9 +48,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="autoParse">If <c>true</c> auto parse is on.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Parser"/></returns>
-        public Parser AutoParse(bool autoParse)
+        public Parser SetAutoParse(bool autoParse)
         {
-            this.options.AutoParse = autoParse;
+            this.Options.AutoParse = autoParse;
             return this;
         }
 
@@ -53,9 +59,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="node">A jQuery selector for specific node to parse.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Parser"/></returns>
-        public Parser Node(string node)
+        public Parser SetNode(string node)
         {
-            this.options.Node = node;
+            this.Options.Node = node;
             return this;
         }
 
@@ -65,9 +71,9 @@ namespace JEasyUI.Facades
         /// </summary>
         /// <param name="onComplete">A javascript function to handle the event.</param>
         /// <returns>An instance of <see cref="JEasyUI.Facades.Parser"/></returns>
-        public Parser OnComplete(string onComplete)
+        public Parser SetOnComplete(string onComplete)
         {
-            this.options.OnComplete = onComplete;
+            this.Options.OnComplete = onComplete;
             return this;
         }
 
@@ -75,22 +81,16 @@ namespace JEasyUI.Facades
         {
             StringBuilder parser = new StringBuilder();
             parser.AppendLine("<script>");
-            if (this.options.AutoParse.HasValue)
-                parser.AppendFormat("$.parser.auto = {0};\n", this.options.AutoParse.Value.ToString().ToLowerInvariant());
+            if (this.Options.AutoParse.HasValue)
+                parser.AppendFormat("$.parser.auto = {0};\n", this.Options.AutoParse.Value.ToString().ToLowerInvariant());
 
-            if (!string.IsNullOrEmpty(this.options.OnComplete))
-                parser.AppendFormat("$.parser.onComplete = {0};\n", this.options.OnComplete);
+            if (!string.IsNullOrEmpty(this.Options.OnComplete))
+                parser.AppendFormat("$.parser.onComplete = {0};\n", this.Options.OnComplete);
 
-            parser.AppendFormat("$.parser.parse('{0}');\n", this.options.Node);
+            parser.AppendFormat("$.parser.parse('{0}');\n", this.Options.Node);
             parser.AppendLine("</script>");
             return parser.ToString();
         }
-
-        #endregion
-
-        #region Private string and constants
-
-        private ParserOptions options;
 
         #endregion
     }

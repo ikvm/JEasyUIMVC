@@ -69,13 +69,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Facades\Draggable.cs" />
+    <Compile Include="Facades\Droppable.cs" />
     <Compile Include="Facades\Loader.cs" />
     <Compile Include="Facades\Parser.cs" />
+    <Compile Include="Facades\Resizable.cs" />
     <Compile Include="JEasyUIHelper.cs" />
     <Compile Include="JEasyUIHtmlHelper.cs" />
+    <Compile Include="Options\DraggableOptions.cs" />
+    <Compile Include="Options\DroppableOptions.cs" />
     <Compile Include="Options\LoaderOptions.cs" />
     <Compile Include="Options\ParserOptions.cs" />
+    <Compile Include="Options\ResizableOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
